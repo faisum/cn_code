@@ -96,3 +96,187 @@
  }
 
 
+2. Implement socket programming date and time display from client to server using TCP Sockets 
+Aim
+ To implement socket programming date and time display from client to server using TCP
+ Sockets 
+Algorithm:
+ SERVER
+ 1. Create a server socket and bind it to port. 
+‟
+ 2. Listen for new connection and when a connection arrives, accept it. 
+3. Send server s date and time to the client. 
+‟
+ 4. Read client s IP address sent by the client.
+ 5. Display the client details. 
+6. Repeat steps 2-5 until the server is terminated. 
+7. Close all streams. 
+8. Close the server socket. 
+9. Stop. 
+CLIENT
+ 1. Create a client socket and connect it to the server s port number. 
+‟
+ 2. Retrieve its own IP address using built-in function. 
+3. Send its address to the server. 
+4. Display the date & time sent by the server.
+ 5. Close the input and output streams. 
+6. Close the client socket. 
+7. Stop
+ Program:
+ import java.net.*;
+ import java.io.*;
+ import java.util.*;
+ class tcpserver
+ {
+ tcpserver.java
+ public static void main(String arg[])
+ {
+ ServerSocket ss = null;
+ Socket cs; PrintStream ps;
+ BufferedReader dis;
+ String inet; try
+ {
+ ss = new ServerSocket(4444);
+ System.out.println("Press Ctrl+C to quit"); 
+while(true)
+ {
+ cs = ss.accept();
+ ps = new PrintStream(cs.getOutputStream());
+ Date d = new Date();
+ ps.println(d);
+ dis = new BufferedReader(new InputStreamReader(cs.getInputStream()));
+ inet = dis.readLine(); 
+System.out.println("Client System/IP address is :"+ inet);
+ ps.close(); 
+dis.close();
+ }
+ }
+ 4
+catch(IOException e)
+ { System.out.println("The exception is :" + e);
+ }
+ }
+ }
+ import java.net.*;
+ import java.io.*;
+ class tcpclient
+ {
+ tcpclient.java
+ public static void main (String args[])
+ { 
+Socket soc; 
+BufferedReader dis;
+ String sdate; 
+PrintStream ps;
+ try 
+{ 
+InetAddress ia = InetAddress.getLocalHost();
+ if (args.length == 0)
+ soc = new Socket(InetAddress.getLocalHost(),4444);
+ else soc = new Socket(InetAddress.getByName(args[0]),4444);
+ dis = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+ sdate=dis.readLine(); 
+System.out.println("The date/time on server is : " +sdate);
+ ps = new PrintStream(soc.getOutputStream());
+ ps.println(ia);
+ ps.close();}
+ catch(IOException e)
+ {
+ System.out.println("THE EXCEPTION is :" + e);
+ }
+ }
+ }
+
+
+3. Write a code simulating ARP protocols
+Aim
+ To implement socket programming date and time display from client to server using TCP
+ Sockets 
+Algorithm:
+ SERVER
+ 1. Create a server socket and bind it to port. 
+‟
+ 2. Listen for new connection and when a connection arrives, accept it. 
+3. Send server s date and time to the client. 
+‟
+ 4. Read client s IP address sent by the client.
+ 5. Display the client details. 
+6. Repeat steps 2-5 until the server is terminated. 
+7. Close all streams. 
+8. Close the server socket. 
+9. Stop. 
+CLIENT
+ 1. Create a client socket and connect it to the server s port number. 
+‟
+ 2. Retrieve its own IP address using built-in function. 
+3. Send its address to the server. 
+4. Display the date & time sent by the server.
+ 5. Close the input and output streams. 
+6. Close the client socket. 
+7. Stop
+ Program:
+ import java.net.*;
+ import java.io.*;
+ import java.util.*;
+ class tcpserver
+ {
+ tcpserver.java
+ public static void main(String arg[])
+ {
+ ServerSocket ss = null;
+ Socket cs; PrintStream ps;
+ BufferedReader dis;
+ String inet; try
+ {
+ ss = new ServerSocket(4444);
+ System.out.println("Press Ctrl+C to quit"); 
+while(true)
+ {
+ cs = ss.accept();
+ ps = new PrintStream(cs.getOutputStream());
+ Date d = new Date();
+ ps.println(d);
+ dis = new BufferedReader(new InputStreamReader(cs.getInputStream()));
+ inet = dis.readLine(); 
+System.out.println("Client System/IP address is :"+ inet);
+ ps.close(); 
+dis.close();
+ }
+ }
+ 4
+catch(IOException e)
+ { System.out.println("The exception is :" + e);
+ }
+ }
+ }
+ import java.net.*;
+ import java.io.*;
+ class tcpclient
+ {
+ tcpclient.java
+ public static void main (String args[])
+ { 
+Socket soc; 
+BufferedReader dis;
+ String sdate; 
+PrintStream ps;
+ try 
+{ 
+InetAddress ia = InetAddress.getLocalHost();
+ if (args.length == 0)
+ soc = new Socket(InetAddress.getLocalHost(),4444);
+ else soc = new Socket(InetAddress.getByName(args[0]),4444);
+ dis = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+ sdate=dis.readLine(); 
+System.out.println("The date/time on server is : " +sdate);
+ ps = new PrintStream(soc.getOutputStream());
+ ps.println(ia);
+ ps.close();}
+ catch(IOException e)
+ {
+ System.out.println("THE EXCEPTION is :" + e);
+ }
+ }
+ }
+
+
