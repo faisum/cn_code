@@ -189,94 +189,655 @@ System.out.println("The date/time on server is : " +sdate);
 
 
 3. Write a code simulating ARP protocols
-Aim
- To implement socket programming date and time display from client to server using TCP
- Sockets 
-Algorithm:
- SERVER
- 1. Create a server socket and bind it to port. 
-‟
- 2. Listen for new connection and when a connection arrives, accept it. 
-3. Send server s date and time to the client. 
-‟
+Aim:
+ To write a java program for simulating arp/rarp protocols
+ Algorithm:
+ 1. Create a server socket and bind it to port.
+ ‟
+ server
+ 2. Listen for new connection and when a connection arrives, accept it.
+ 3. Send server s date and time to the client.
+ ‟
  4. Read client s IP address sent by the client.
- 5. Display the client details. 
-6. Repeat steps 2-5 until the server is terminated. 
-7. Close all streams. 
-8. Close the server socket. 
-9. Stop. 
-CLIENT
- 1. Create a client socket and connect it to the server s port number. 
-‟
- 2. Retrieve its own IP address using built-in function. 
-3. Send its address to the server. 
-4. Display the date & time sent by the server.
- 5. Close the input and output streams. 
-6. Close the client socket. 
-7. Stop
- Program:
- import java.net.*;
+ 5. Display the client details.
+ 6. Repeat steps 2-5 until the server is terminated.
+ 7. Close all streams.
+ 8. Close the server socket.
+ 9. Stop.
+ Client
+ 1. Create a client socket and connect it to the server s port number.
+ ‟
+ 2. Retrieve its own IP address using built-in function.
+ 3. Send its address to the server.
+ 4. Display the date & time sent by the server.
+ 5. Close the input and output streams.
+ 6. Close the client socket.
+ 7. Stop.
+ Program
+ Program for Address Resolutuion Protocol (ARP) using TCP
  import java.io.*;
+ import java.net.*;
  import java.util.*;
- class tcpserver
+ class arpserver
  {
- tcpserver.java
- public static void main(String arg[])
+ public static void main(String args[])
  {
- ServerSocket ss = null;
- Socket cs; PrintStream ps;
- BufferedReader dis;
- String inet; try
+ try
  {
- ss = new ServerSocket(4444);
- System.out.println("Press Ctrl+C to quit"); 
-while(true)
+ arpserver.java
+ ServerSocket obj=new ServerSocket(200);
+ Socket obj1=obj.accept();
+ while(true)
  {
- cs = ss.accept();
- ps = new PrintStream(cs.getOutputStream());
- Date d = new Date();
- ps.println(d);
- dis = new BufferedReader(new InputStreamReader(cs.getInputStream()));
- inet = dis.readLine(); 
-System.out.println("Client System/IP address is :"+ inet);
- ps.close(); 
-dis.close();
+ DataInputStream din=new DataInputStream(obj1.getInputStream());
+ DataOutputStream dout=new DataOutputStream(obj1.getOutputStream());
+ String str=din.readLine();
+ String ip[]={"165.165.80.80","165.165.79.1"};
+ String mac[]={"6A:08:AA:C2","8A:BC:E3:FA"};
+ for(int i=0;i<ip.length;i++)
+ {
+ if(str.equals(ip[i]))
+ {
+ dout.writeBytes(mac[i]+'\n');
+ break;
  }
  }
- 4
-catch(IOException e)
- { System.out.println("The exception is :" + e);
+ obj.close();
+ }
+ }
+ 7
+catch(Exception e)
+ {
+ System.out.println(e);
  }
  }
  }
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ class arpclient
+ {
+ public static void main(String args[])
+ {
+ try
+ {
+ arpclient.java
+ BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
+ Socket clsct=new Socket("127.0.0.1",200);
+ DataInputStream din=new DataInputStream(clsct.getInputStream());
+ DataOutputStream dout=new DataOutputStream(clsct.getOutputStream());
+ System.out.println("Enter the Logical address(IP):");
+ String str1=in.readLine();
+ dout.writeBytes(str1+'\n');
+ String str=din.readLine();
+ System.out.println("The Physical Address is: "+str);
+ clsct.close();
+ }
+ catch (Exception e)
+ {
+ System.out.println(e);
+ }
+ }
+ }
+
+
+4. Write a code simulating PING and TRACEROUTE commands
+ Aim:
+ 12
+To Write The java program for simulating ping and traceroute commands
+ Algorithm:
+ 1.Start the program.
+ 2.Get the frame size from the user
+ 3.To create the frame based on the user request.
+ 4.To send frames to server from the client side.
+ 5.If your frames reach the server it will send ACK signal to client otherwise it will send
+ NACK signal to client.
+ 6.Stop the program
+ Program
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ import java.text.*;
+ class pingserver
+ {
+ pingserver.java
+ public static void main(String args[])throws Exception
+ {
+ ServerSocket ss=new ServerSocket(5555);
+ Socket s=ss.accept();
+ int c=0;
+ while(c<4)
+ {
+ DataInputStream dis=new DataInputStream(s.getInputStream());
+ PrintStream out=new PrintStream(s.getOutputStream());
+ String str=dis.readLine();
+ out.println("Reply from"+InetAddress.getLocalHost()+";Length"+str.length());
+ c++;
+ }
+ s.close();
+ }
+ }
+ import java.io.*;
+ import java.net.*;
+ import java.util.Calendar;
+ class pingclient
+ {
+ pingclient.java
+ public static void main(String args[])throws Exception
+ {
+ String str;
+ int c=0;
+ long t1,t2;
+ Socket s=new Socket("127.0.0.1",5555);
+ DataInputStream dis=new DataInputStream(s.getInputStream());
+ PrintStream out=new PrintStream(s.getOutputStream());
+ while(c<4)
+ {
+ t1=System.currentTimeMillis();
+ str="Welcome to network programming world";
+ out.println(str);
+ 13
+System.out.println(dis.readLine());
+ t2=System.currentTimeMillis();
+ System.out.println(";TTL="+(t2-t1)+"ms");
+ c++;
+ }
+ s.close();
+ }
+ }
+
+
+5. Create a socket for HTTP for web page upload and download.
+Aim:
+ To write a java program for socket for HTTP for web page upload and download .
+ Algorithm
+ 1.Start the program.
+ 2.Get the frame size from the user
+ 3.To create the frame based on the user request.
+ 4.To send frames to server from the client side.
+ 5.If your frames reach the server it will send ACK signal to client otherwise it will
+ send NACK signal to client.
+ 6.Stop the program
+ Program :
+ import javax.swing.*;
+ import java.net.*;
+ import java.awt.image.*;
+ import javax.imageio.*;
+ import java.io.*;
+ cli.java
+ import java.awt.image.BufferedImage;
+ import java.io.ByteArrayOutputStream;
+ import java.io.File;
+ import java.io.IOException;
+ import javax.imageio.ImageIO;
+ public class cli
+ {
+ public static void main(String args[]) throws Exception
+ {
+ Socket soc;
+ BufferedImage img = null;
+ soc=new Socket("localhost",4000);
+ System.out.println("Client is running. ");
+ try 
+{
+ System.out.println("Reading image from disk. ");
+ img = ImageIO.read(new File("digital_image_processing.jpg"));
+ ByteArrayOutputStream baos = new ByteArrayOutputStream();
+ ImageIO.write(img, "jpg", baos);
+ baos.flush();
+ byte[] bytes = baos.toByteArray();
+ baos.close();
+ System.out.println("Sending image to server. ");
+ OutputStream out = soc.getOutputStream();
+ DataOutputStream dos = new DataOutputStream(out);
+ dos.writeInt(bytes.length);
+ dos.write(bytes, 0, bytes.length);
+ System.out.println("Image sent to server. ");
+ dos.close();
+ out.close();
+ }catch (Exception e) {
+ System.out.println("Exception: " + e.getMessage());
+ soc.close();
+ }
+ soc.close();
+ }
+ 16
+}
+ ser.java
  import java.net.*;
  import java.io.*;
- class tcpclient
+ import java.awt.image.*;
+ import javax.imageio.*;
+ import javax.swing.*;
+ class ser 
+{
+ public static void main(String args[]) throws Exception{
+ ServerSocket server=null;
+ Socket socket;
+ server=new ServerSocket(4000);
+ System.out.println("Server Waiting for image");
+ socket=server.accept();
+ System.out.println("Client connected.");
+ InputStream in = socket.getInputStream();
+ DataInputStream dis = new DataInputStream(in);
+ int len = dis.readInt();
+ System.out.println("Image Size: " + len/1024 + "KB");
+ byte[] data = new byte[len];
+ dis.readFully(data);
+ dis.close();
+ in.close();
+ InputStream ian = new ByteArrayInputStream(data);
+ BufferedImage bImage = ImageIO.read(ian);
+ JFrame f = new JFrame("Server");
+ ImageIcon icon = new ImageIcon(bImage);
+ JLabel l = new JLabel();
+ l.setIcon(icon);
+ f.add(l);
+ f.pack();
+ f.setVisible(true);
+ }
+ }
+
+
+6. Write a java program to implement RPC (remote procedure call)
+Aim:
+ To write a java program to implement RPC (remote procedure call)
+ Algorithm :
+ 1.Start the program.
+ 2.Get the frame size from the user
+ 3.To create the frame based on the user request.
+ 4.To send frames to server from the client side.
+ 5.If your frames reach the server it will send ACK signal to client otherwise it will
+ send NACK signal to client.
+ 6.Stop the program
+ Program:
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ class rpcclient
  {
- tcpclient.java
- public static void main (String args[])
- { 
-Socket soc; 
-BufferedReader dis;
- String sdate; 
-PrintStream ps;
- try 
-{ 
-InetAddress ia = InetAddress.getLocalHost();
- if (args.length == 0)
- soc = new Socket(InetAddress.getLocalHost(),4444);
- else soc = new Socket(InetAddress.getByName(args[0]),4444);
- dis = new BufferedReader(new InputStreamReader(soc.getInputStream()));
- sdate=dis.readLine(); 
-System.out.println("The date/time on server is : " +sdate);
- ps = new PrintStream(soc.getOutputStream());
- ps.println(ia);
- ps.close();}
+ rpcclient.java
+ public static void main(String args[])
+ {
+ try
+ {
+ BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
+ Socket clsct=new Socket("127.0.0.1",139);
+ DataInputStream din=new DataInputStream(clsct.getInputStream());
+ DataOutputStream dout=new DataOutputStream(clsct.getOutputStream());
+ System.out.println("Enter String");
+ String str=in.readLine();
+ dout.writeBytes(str+'\n');
+ clsct.close();
+ }
+ catch (Exception e)
+ {
+ System.out.println(e);
+ }
+ }
+ }
+ rpcserver.java
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ class rpcserver
+ {
+ public static void main(String args[])
+ {
+ try
+ {
+ ServerSocket obj=new ServerSocket(139);
+ while(true)
+ {
+ Socket obj1=obj.accept();
+ DataInputStream din=new DataInputStream(obj1.getInputStream());
+ DataOutputStream dout=new DataOutputStream(obj1.getOutputStream());
+ 19
+String str=din.readLine();
+ Process p=Runtime.getRuntime().exec(str);
+ }
+ }
+ catch(Exception e)
+ {
+ System.out.println(e);
+ }
+ }
+ }
+
+
+7. Write a program to implement sub netting and find the subnet masks.
+ Aim:
+ Write a program to implement subnetting and find the subnet masks.
+ 21
+Algorithm :
+ 1.Start the program.
+ 2.Get the frame size from the user
+ 3.To create the frame based on the user request.
+ 4.To send frames to server from the client side.
+ 5.If your frames reach the server it will send ACK signal to client otherwise it will
+ send NACK signal to client.
+ 6.Stop the program
+ Program
+ import java.util.Scanner;
+ class subnet
+ {
+ public static void main(String args[])
+ {
+ Scanner sc = new Scanner(System.in);
+ System.out.print("Enter the ip address:");
+ String ip = sc.nextLine();
+ String split_ip[] = ip.split("\\.");
+ String split_bip[] = new String[4];
+ String bip = "";
+ for(int i=0;i<4;i++)
+ {
+ split_bip[i] = appendZeros(Integer.toBinaryString(Integer.parseInt(split_ip[i])));
+ bip += split_bip[i];
+ }
+ System.out.println("IP in binary is "+bip);
+ System.out.print("Enter the number of addresses: ");
+ int n = sc.nextInt();
+ int bits = (int)Math.ceil(Math.log(n)/Math.log(2)); 
+System.out.println("Number of bits required for address = "+bits);
+ int mask = 32-bits;
+ System.out.println("The subnet mask is = "+mask);
+ int fbip[] = new int[32];
+ for(int i=0; i<32;i++) 
+fbip[i] = (int)bip.charAt(i)-48; 
+for(int i=31;i>31-bits;i--)
+ fbip[i] &= 0;
+ String fip[] = {"","","",""};
+ for(int i=0;i<32;i++)
+ fip[i/8] = new String(fip[i/8]+fbip[i]);
+ System.out.print("First address is = ");
+ for(int i=0;i<4;i++)
+ {
+ System.out.print(Integer.parseInt(fip[i],2));
+ if(i!=3) 
+System.out.print(".");
+ }
+ System.out.println();
+ int lbip[] = new int[32];
+ for(int i=0; i<32;i++) lbip[i] = (int)bip.charAt(i)-48; 
+for(int i=31;i>31-bits;i--)
+ lbip[i] |= 1;
+ String lip[] = {"","","",""};
+ for(int i=0;i<32;i++)
+ lip[i/8] = new String(lip[i/8]+lbip[i]);
+ 22
+System.out.print("Last address is = ");
+ for(int i=0;i<4;i++)
+ {
+ System.out.print(Integer.parseInt(lip[i],2));
+ if(i!=3) 
+System.out.print(".");
+ }
+ System.out.println();
+ }
+ static String appendZeros(String s)
+ {
+ String temp = new String("00000000");
+ return temp.substring(s.length())+ s;
+ }
+ }
+
+
+8. Applications using TCP Sockets-Chat
+b. Chat
+ import java.io.*;
+ import java.net.*;
+ talkclient.java
+ public class talkclient
+ 26
+{
+ public static void main(String args[])throws Exception
+ {
+ Socket c=null;
+ DataInputStream usr_inp=null;
+ DataInputStream din=new DataInputStream(System.in);
+ DataOutputStream dout=null;
+ Try
+ {
+ c=new Socket("127.0.0.1",1234);
+ usr_inp=new DataInputStream(c.getInputStream());
+ dout=new DataOutputStream(c.getOutputStream());
+ }
+ catch(IOException e)
+ {}
+ if(c!=null || usr_inp!=null || dout!=null)
+ {
+ String unip;
+ System.out.println("\nEnter the message for server:");
+ while((unip=din.readLine())!=null)
+ {
+ dout.writeBytes(""+unip);
+ dout.writeBytes("\n");
+ System.out.println("reply");
+ System.out.println(usr_inp.readLine());
+ System.out.println("\n enter your message:");
+ }
+ System.exit(0);
+ }
+ din.close();
+ usr_inp.close();
+ c.close();
+ }
+ }
+ import java.io.*;
+ import java.net.*;
+ public class talkserver
+ {
+ talkserver.java
+ public static void main(String args[])throws Exception
+ {
+ ServerSocket m=null;
+ Socket c=null;
+ DataInputStream usr_inp=null;
+ DataInputStream din=new DataInputStream(System.in);
+ DataOutputStream dout=null;
+ try
+ {
+ m=new ServerSocket(1234);
+ c=m.accept();
+ usr_inp=new DataInputStream(c.getInputStream());
+ dout=new DataOutputStream(c.getOutputStream());
+ }
+ catch(IOException e)
+ {}
+ 27
+if(c!=null||usr_inp!=null)
+ {
+ String unip;
+ while(true)
+ {
+ System.out.println("\nmessage from client:");
+ String m1=usr_inp.readLine();
+ System.out.println(m1);
+ System.out.println("enter your message:");
+ unip=din.readLine();
+ dout.writeBytes(""+unip);
+ dout.writeBytes("\n");
+ }
+ }
+ dout.close();
+ usr_inp.close();
+ c.close();
+ }
+ }
+
+
+9. Write a code simulating RARP protocol
+Program- RARP: Reverse Address Resolutuion Protocol (RARP) using UDP
+ 9
+rarpserver.java
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ class rarpserver
+ {
+ public static void main(String args[])
+ {
+ try
+ {
+ DatagramSocket server=new DatagramSocket(1309);
+ while(true)
+ {
+ byte[] sendbyte=new byte[1024];
+ byte[] receivebyte=new byte[1024];
+ DatagramPacket receiver=new
+ DatagramPacket(receivebyte,receivebyte.length);
+ server.receive(receiver);
+ String str=new String(receiver.getData());
+ String s=str.trim();
+ //System.out.println(s);
+ InetAddress addr=receiver.getAddress();
+ int port=receiver.getPort();
+ String ip[]={"165.165.80.80","165.165.79.1"};
+ String mac[]={"6A:08:AA:C2","8A:BC:E3:FA"};
+ for(int i=0;i<ip.length;i++)
+ {
+ if(s.equals(mac[i]))
+ {
+ sendbyte=ip[i].getBytes();
+ DatagramPacket sender=new
+ DatagramPacket(sendbyte,sendbyte.length,addr,port);
+ server.send(sender);
+ break;
+ }
+ }
+ break;
+ }
+ }
+ catch(Exception e)
+ {
+ System.out.println(e);
+ }
+ }
+ }
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ rarpclient.java
+ 10
+class rarpclient
+ {
+ public static void main(String args[])
+ {
+ try
+ {
+ DatagramSocket client=new DatagramSocket();
+ InetAddress addr=InetAddress.getByName("127.0.0.1");
+ byte[] sendbyte=new byte[1024];
+ byte[] receivebyte=new byte[1024];
+ BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
+ System.out.println("Enter the Physical address (MAC):");
+ String str=in.readLine();
+ sendbyte=str.getBytes();
+ DatagramPacket sender=new DatagramPacket(sendbyte,sendbyte.length,addr,1309);
+ client.send(sender);
+ DatagramPacket receiver=new DatagramPacket(receivebyte,receivebyte.length);
+ client.receive(receiver);
+ String s=new String(receiver.getData());
+ System.out.println("The Logical Address is(IP): "+s.trim());
+ client.close();
+ }
+ catch(Exception e)
+ {
+ System.out.println(e);
+ }
+ }
+ }
+
+
+10. Applications using TCP Sockets- Echo client and echo server
+Aim
+ To write a java program for application using TCP Sockets Links
+ Algorithm
+ 23
+1.Start the program.
+ 2.Get the frame size from the user
+ 3.To create the frame based on the user request.
+ 4.To send frames to server from the client side.
+ 5.If your frames reach the server it will send ACK signal to client otherwise it will
+ send NACK signal to client.
+ 6.Stop the program
+ Program :
+ a. Echo client and echo server
+ import java.io.*;
+ import java.net.*;
+ import java.util.*;
+ public class echoclient
+ {
+ echoclient.java
+ public static void main(String args[])throws Exception
+ {
+ Socket c=null;
+ DataInputStream usr_inp=null;
+ DataInputStream din=new DataInputStream(System.in);
+ DataOutputStream dout=null;
+ try
+ {
+ c=new Socket("127.0.0.1",5678);
+ usr_inp=new DataInputStream(c.getInputStream());
+ dout=new DataOutputStream(c.getOutputStream());
+ }
  catch(IOException e)
  {
- System.out.println("THE EXCEPTION is :" + e);
+ }
+ if(c!=null || usr_inp!=null || dout!=null)
+ {
+ String unip;
+ while((unip=din.readLine())!=null)
+ {
+ dout.writeBytes(""+unip);
+ dout.writeBytes("\n");
+ System.out.println("\n the echoed message");
+ System.out.println(usr_inp.readLine());
+ System.out.println("\n enter your message");
+ }
+ System.exit(0);
+ }
+ din.close();
+ usr_inp.close();
+ c.close(); 
+}
+ import java.io.*;
+ import java.net.*;
+ }
+ public class echoserver
+ {
+ echoserver.java
+ public static void main(String args[])throws Exception
+ {
+ ServerSocket m=null;
+ 24
+Socket c=null;
+ DataInputStream usr_inp=null;
+ DataInputStream din=new DataInputStream(System.in);
+ DataOutputStream dout=null;
+ try
+ {
+ m=new ServerSocket(5678);
+ c=m.accept();
+ usr_inp=new DataInputStream(c.getInputStream());
+ dout=new DataOutputStream(c.getOutputStream());
+ }
+ catch(IOException e)
+ {}
+ if(c!=null || usr_inp!=null)
+ {
+ String unip;
+ while(true)
+ {
+ System.out.println("\nMessage from Client...");
+ String m1=(usr_inp.readLine());
+ System.out.println(m1);
+ dout.writeBytes(""+m1);
+ dout.writeBytes("\n");
  }
  }
+ dout.close();
+ usr_inp.close();
+ c.close();
  }
-
-
+ }
